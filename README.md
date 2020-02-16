@@ -1,14 +1,22 @@
-Docker container for Java on: Tomcat, PostgreSQL, Nginx 
+Docker container for Java based on: Tomcat, PostgreSQL, Nginx 
 
 # Build
 ```
-docker-compose build
 docker-compose up -d
 ```
 
 # Run
 ```
 http://localhost:8080
+http://localhost
+```
+
+# Docker
+You can use Docker exec to enter a Docker container.
+
+Example:
+```
+docker exec -it tomcat-container bash
 ```
 
 # Debug
