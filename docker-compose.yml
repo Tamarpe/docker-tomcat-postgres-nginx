@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  tomcat:
+    container_name: tomcat-container
+    build: ./docker/tomcat
+    networks:
+      - datalink
+    depends_on:
+      - pgdb
+    volumes:
+      - ./target/sample.war:/usr/local/tomcat/webapps/ROOT.war
+    ports:
+      - "8080:8080"
+      - "61000:61000"
+
+    expose:
+      - 61000
+
+    environment:
+      _JAVA_OPTIONS: "-Xms256m -Xmx384m -Xdebug -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=61000"
+
+  pgdb:
+    container_name: pgdb
+    image: postgres
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: db
+    ports:
+      - 5430:5432
+    networks:
+      - datalink
+
+networks:
+  datalink:
+    driver: bridge
+
+volumes:
+  pgdata:
